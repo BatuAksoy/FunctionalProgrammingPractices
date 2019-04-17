@@ -1,3 +1,4 @@
+module Bonus1 where
 
 -- 1. dayOfWeek
 -- Saturday = 0, Sunday = 1
