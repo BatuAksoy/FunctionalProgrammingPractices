@@ -92,10 +92,13 @@ convertCard :: Char -> Char -> Card
 convertCard suit rank = Card {suit = convertSuit suit, rank = convertRank rank}
 
 -- 12 readCards
-readCards :: [Card] -> IO [Card]
-readCards cs = do
-    line <- getLine
-    if length line == 2 then readCards ((convertCard (line!!0) (line!!1)):cs) else if line == "." then return(cs) else error "Input card is unknown!"
+readCards :: IO [Card]
+readCards = readCards' []
+    where
+      readCards' :: [Card] -> IO [Card]
+      readCards' cs = do
+          line <- getLine
+          if length line == 2 then readCards' ((convertCard (line!!0) (line!!1)):cs) else if line == "." then return(cs) else error "Input card is unknown!"
 
 -- 13 convertMove
 convertMove :: Char -> Char -> Char -> Move
@@ -104,19 +107,21 @@ convertMove move suit rank
     | elem move "rR" = Discard Card{suit=convertSuit suit, rank=convertRank rank}
 
 -- 14 readMoves
-readMoves :: [Move] -> IO [Move]
-readMoves mvs = do
-    line <- getLine
-    if length line == 1 && line == "." then return(mvs) else if length line == 1 then readMoves ((convertMove (line!!0) 'a' 'a'):mvs)
-        else if length line == 3 then readMoves ((convertMove (line!!0) (line!!1) (line!!2)):mvs) else error "Input move is unknown!"
-
+readMoves :: IO [Move]
+readMoves = readMoves' []
+    where
+      readMoves' :: [Move] -> IO [Move]
+      readMoves' mvs = do
+          line <- getLine
+          if length line == 1 && line == "." then return(mvs) else if length line == 1 then readMoves' ((convertMove (line!!0) 'a' 'a'):mvs)
+              else if length line == 3 then readMoves' ((convertMove (line!!0) (line!!1) (line!!2)):mvs) else error "Input move is unknown!"
 
 main = do
         putStrLn "Enter cards:"
-        cards <- readCards []
+        cards <- readCards
         putStrLn (show cards)
         putStrLn "Enter moves:"
-        moves <- readMoves []
+        moves <- readMoves
         putStrLn (show moves)
         putStrLn "Enter goal:"
         line <- getLine
