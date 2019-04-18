@@ -27,7 +27,7 @@ testDaysInMonth = do
 testSundays :: IO()
 testSundays = do
   let inputs = [[1996, 1996], [1996, 1997], [2019, 2019], [1600, 1700]]
-  let results = [2, 3, 2, 186]
+  let results = [2, 3, 2, 173]
   putStrLn $ if map (\t -> sundays1 (t!!0) (t!!1)) inputs == results then "sundays1 test passed" else "sundays1 test failed"
   putStrLn $ if map (\t -> sundays2 (t!!0) (t!!1)) inputs == results then "sundays2 test passed" else "sundays2 test failed"
 
